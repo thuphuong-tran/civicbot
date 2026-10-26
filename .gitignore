@@ -1,0 +1,17 @@
+.env
+.venv/
+venv/
+__pycache__/
+*.pyc
+.idea/
+.vscode/
+uploads/
+node_modules/
+frontend/dist/
+test_result.json
+*.log
+.pytest_cache/
+*.db
+
+*.zip
+backup/

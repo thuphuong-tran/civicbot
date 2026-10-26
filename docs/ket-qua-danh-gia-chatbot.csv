@@ -1,0 +1,41 @@
+﻿id,question,group,expected_code,actual_code,expected_type,route,procedure_ok,type_ok,latency_ms,answer_preview
+Q01,Đăng ký tạm trú cần giấy tờ gì?,in_scope,1.004194,1.004194,documents,local,PASS,PASS,8.7,Hồ sơ cần chuẩn bị cho Đăng ký tạm trú: / 1. - Tờ khai thay đổi thông tin cư trú (Mẫu CT01 ban hành kèm theo Thông tư số 5
+Q02,Hồ sơ đăng ký tạm trú gồm những gì?,in_scope,1.004194,1.004194,documents,local,PASS,PASS,5.6,Hồ sơ cần chuẩn bị cho Đăng ký tạm trú: / 1. - Tờ khai thay đổi thông tin cư trú (Mẫu CT01 ban hành kèm theo Thông tư số 5
+Q03,Đăng ký tạm trú mất bao lâu?,in_scope,1.004194,1.004194,time,local,PASS,PASS,5.4,Thời hạn giải quyết thủ tục Đăng ký tạm trú: / - Trực tiếp: 03 Ngày làm việc - Nộp hồ sơ trực tiếp tại Công an cấp xã. / - T
+Q04,Đăng ký thường trú nộp ở đâu?,in_scope,1.004222,1.004222,location,local,PASS,PASS,5.6,Thủ tục Đăng ký thường trú được thực hiện tại: Công an Xã.
+Q05,dang ky thuong tru can giay to gi,in_scope,1.004222,1.004222,documents,local,PASS,PASS,6.4,"Hồ sơ cần chuẩn bị cho Đăng ký thường trú: / 1. Giấy tờ, tài liệu chứng minh việc sở hữu chỗ ở hợp pháp. Trừ trường hợp th"
+Q06,Lệ phí đăng ký thường trú là bao nhiêu?,in_scope,1.004222,1.004222,fee,local,PASS,PASS,5.0,Lệ phí của thủ tục Đăng ký thường trú: Trực tiếp 07 Ngày làm việc Trường hợp công dân nộp hồ sơ trực tiếp thu 20.000 đồn
+Q07,Các bước đăng ký thường trú,in_scope,1.004222,1.004222,steps,local,PASS,PASS,5.7,"Các bước thực hiện Đăng ký thường trú: / 1. Cá nhân, tổ chức chuẩn bị hồ sơ theo quy định của pháp luật. / 2. Cá nhân, tổ ch"
+Q08,Gia hạn tạm trú mất bao lâu?,in_scope,1.002755,1.002755,time,local,PASS,PASS,4.7,Thời hạn giải quyết thủ tục Gia hạn tạm trú: / - Trực tiếp 03 Ngày làm việc - Nộp hồ sơ trực tiếp tại Công an cấp xã. / - Th
+Q09,Gia hạn tạm trú cần chuẩn bị gì?,in_scope,1.002755,1.002755,documents,local,PASS,PASS,4.9,Hồ sơ cần chuẩn bị cho Gia hạn tạm trú: / 1. - Tờ khai thay đổi thông tin cư trú (Mẫu CT01 ban hành kèm theo Thông tư số 5
+Q10,Khai báo tạm vắng ở đâu?,in_scope,1.003677,1.003677,location,local,PASS,PASS,4.5,Thủ tục Khai báo tạm vắng được thực hiện tại: Công an Xã.
+Q11,Thủ tục khai báo tạm vắng gồm những bước nào?,in_scope,1.003677,1.003677,steps,local,PASS,PASS,5.1,"Các bước thực hiện Khai báo tạm vắng: / 1. Cá nhân, tổ chức chuẩn bị hồ sơ theo quy định của pháp luật. / 2. Cá nhân, tổ chứ"
+Q12,Xóa đăng ký thường trú căn cứ pháp lý là gì?,in_scope,1.003197,1.003197,legal,local,PASS,PASS,4.6,Căn cứ pháp lý của thủ tục Xóa đăng ký thường trú: / 1. Luật 68/2020/QH14 — Số: 68/2020/QH14 / 2. Thông tư 55/2021/TT-BCA — 
+Q13,Xóa đăng ký tạm trú cần giấy tờ gì?,in_scope,1.010028,1.010028,documents,local,PASS,PASS,5.4,Hồ sơ cần chuẩn bị cho Xóa đăng ký tạm trú: / 1. - Tờ khai thay đổi thông tin cư trú (Mẫu CT01 ban hành kèm theo Thông tư 
+Q14,Xóa tạm trú có mất phí không?,in_scope,1.010028,1.010028,fee,local,PASS,PASS,4.7,Lệ phí của thủ tục Xóa đăng ký tạm trú: không có
+Q15,Tách hộ cần những bước nào?,in_scope,1.010038,1.010038,steps,local,PASS,PASS,4.6,"Các bước thực hiện Tách hộ: / 1. Cá nhân, tổ chức chuẩn bị hồ sơ theo quy định của pháp luật. / 2. Cá nhân, tổ chức nộp hồ s"
+Q16,Tách khẩu cần hồ sơ gì?,in_scope,1.010038,1.010038,documents,local,PASS,PASS,4.9,Hồ sơ cần chuẩn bị cho Tách hộ: / 1. Tờ khai thay đổi thông tin cư trú (Mẫu CT01 ban hành kèm theo Thông tư số 56/2021/TT-
+Q17,Cho tôi hỏi về xác nhận cư trú,in_scope,1.010041,1.010041,general,local,PASS,PASS,4.9,Thủ tục: Xác nhận thông tin về cư trú / Cơ quan thực hiện: Công an Xã / Mô tả: Thủ tục Xác nhận thông tin về cư trú cho công
+Q18,Xin giấy xác nhận cư trú mất mấy ngày?,in_scope,1.010041,1.010041,time,local,PASS,PASS,4.7,Thời hạn giải quyết thủ tục Xác nhận thông tin về cư trú: / - Trực tiếp 03 Ngày làm việc Kể từ ngày nhận được hồ sơ hợp lệ
+Q19,Điều chỉnh thông tin cư trú cần mẫu đơn gì?,in_scope,1.010039,1.010039,form,local,PASS,PASS,4.3,Biểu mẫu của thủ tục Điều chỉnh thông tin về cư trú trong Cơ sở dữ liệu về cư trú: / 1. Tờ khai thay đổi thông tin cư trú 
+Q20,Thông báo lưu trú có mất phí không?,in_scope,2.001159,2.001159,fee,local,PASS,PASS,4.8,Lệ phí của thủ tục Thông báo lưu trú: không có
+Q21,Thông báo lưu trú thực hiện ở đâu?,in_scope,2.001159,2.001159,location,local,PASS,PASS,5.0,Thủ tục Thông báo lưu trú được thực hiện tại: Công an Xã.
+Q22,Làm căn cước cho con 10 tuổi ở đâu?,in_scope,1.012549,1.012549,location,local,PASS,PASS,5.5,Thủ tục Cấp thẻ căn cước cho người dưới 14 tuổi (thực hiện tại cấp tỉnh) được thực hiện tại: Công an tỉnh.
+Q23,Làm căn cước cho trẻ dưới 14 tuổi cần giấy tờ gì?,in_scope,1.012549,1.012549,documents,local,PASS,PASS,4.8,Hồ sơ cần chuẩn bị cho Cấp thẻ căn cước cho người dưới 14 tuổi (thực hiện tại cấp tỉnh): / 1. Phiếu đề nghị giải quyết thủ
+Q24,Cấp thẻ căn cước cho người trên 14 tuổi cần gì?,in_scope,2.000200,2.000200,documents,local,PASS,PASS,5.4,Hồ sơ cần chuẩn bị cho Cấp thẻ Căn cước cho người từ đủ 14 tuổi trở lên thực hiện tại Công an cấp tỉnh: / 1. Phiếu đề nghị
+Q25,Mất thẻ căn cước thì xin cấp lại thế nào?,in_scope,2.001194,2.001194,steps,local,PASS,PASS,5.1,Các bước thực hiện Cấp lại thẻ căn cước (thực hiện tại cấp tỉnh): / 1. + Công dân đến cơ quan quản lý căn cước của Công an
+Q26,Cấp lại căn cước mất bao lâu?,in_scope,2.001194,2.001194,time,local,PASS,PASS,5.1,Thời hạn giải quyết thủ tục Cấp lại thẻ căn cước (thực hiện tại cấp tỉnh): / - Trực tiếp 07 Ngày làm việc - Trực tiếp tại 
+Q27,Đổi thẻ căn cước lệ phí bao nhiêu?,in_scope,2.001195,2.001195,fee,local,PASS,PASS,5.1,Lệ phí của thủ tục Cấp đổi thẻ căn cước (thực hiện tại cấp tỉnh): không
+Q28,Cấp đổi căn cước căn cứ pháp lý,in_scope,2.001195,2.001195,legal,local,PASS,PASS,4.9,Căn cứ pháp lý của thủ tục Cấp đổi thẻ căn cước (thực hiện tại cấp tỉnh): / 1. Luật Căn cước — Số: 26/2023/QH15 / 2. Thông t
+Q29,Mẫu CT01 dùng cho đăng ký tạm trú ở đâu?,in_scope,1.004194,1.004194,form,local,PASS,PASS,5.1,Biểu mẫu của thủ tục Đăng ký tạm trú: / 1. - Tờ khai thay đổi thông tin cư trú (Mẫu CT01 ban hành kèm theo Thông tư số 56/
+Q30,Tôi chuyển nhà sang xã khác thì phải làm gì?,in_scope,SUGGEST,,suggestion,local_suggestion,PASS,PASS,3.6,"Khi chuyển đến chỗ ở mới, bạn cần làm một trong hai thủ tục sau: / 1. Đăng ký thường trú (mã 1.004222): nếu bạn chuyển đến"
+Q31,Làm hộ chiếu cần gì?,out_of_scope,OUT,,none,gemini_out_of_scope,PASS,PASS,5356.9,"Chào bạn, tôi là trợ lý AI của CivicBot. Dưới đây là thông tin cơ bản về thủ tục làm hộ chiếu: /  / Cơ quan tiếp nhận: Phòng"
+Q32,Đăng ký khai sinh cho con cần giấy tờ gì?,out_of_scope,OUT,,none,gemini_out_of_scope,PASS,PASS,4551.0,"Chào bạn, tôi là trợ lý AI của CivicBot. Dưới đây là thông tin về thủ tục đăng ký khai sinh: /  / Cơ quan tiếp nhận: UBND cấ"
+Q33,Thủ tục đăng ký kết hôn ở đâu?,out_of_scope,OUT,,none,gemini_out_of_scope,PASS,PASS,3607.5,"Cơ quan tiếp nhận: Ủy ban nhân dân cấp xã nơi cư trú của một trong hai bên nam, nữ. /  / Các bước thực hiện chính: / 1. Chuẩn "
+Q34,Giá xăng hôm nay bao nhiêu?,out_of_scope,OUT,,none,gemini_general,PASS,PASS,3323.6,Tôi không có dữ liệu thời gian thực để cập nhật giá xăng mới nhất hôm nay. /  / Bạn có thể tra cứu giá xăng dầu chính thức v
+Q35,Cấp lại hộ chiếu bị mất thế nào?,out_of_scope,OUT,,none,gemini_out_of_scope,PASS,PASS,13955.9,"Chào bạn, tôi là trợ lý AI của CivicBot. Đối với thủ tục cấp lại hộ chiếu do mất, bạn có thể tham khảo các thông tin cơ "
+Q36,Đăng ký xe máy cần giấy tờ gì?,out_of_scope,OUT,,none,gemini_out_of_scope,PASS,PASS,2318.7,"Chào bạn, tôi là trợ lý AI của CivicBot. Đối với thủ tục đăng ký xe máy, thông tin cơ bản như sau: /  / Cơ quan tiếp nhận: C"
+Q37,Thời tiết Hà Nội hôm nay,out_of_scope,OUT,,none,gemini_general,PASS,PASS,2253.9,Tôi không có quyền truy cập dữ liệu thời tiết thời gian thực nên không thể cung cấp thông tin chính xác về thời tiết Hà 
+Q38,Đổi bằng lái xe ở đâu?,out_of_scope,OUT,,none,gemini_out_of_scope,PASS,PASS,5829.9,Bạn có thể thực hiện đổi bằng lái xe tại Sở Giao thông Vận tải nơi bạn đã đăng ký hộ khẩu hoặc tạm trú. /  / Các bước thực h
+Q39,Xin chào,other,GREETING,,greeting,greeting,PASS,PASS,3.0,Xin chào! Tôi là CivicBot. Tôi có thể giúp bạn tra cứu thủ tục cư trú và giấy tờ tùy thân.
+Q40,Cảm ơn bạn,other,GREETING,,greeting,greeting,PASS,PASS,2.6,Xin chào! Tôi là CivicBot. Tôi có thể giúp bạn tra cứu thủ tục cư trú và giấy tờ tùy thân.

@@ -1,0 +1,101 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: civicbot-mysql
+    restart: unless-stopped
+
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-civicbot}
+      MYSQL_USER: ${MYSQL_USER:-civicbot}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-civicbot_password}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root_password}
+
+    # Không mở cổng 3306 ra ngoài: chỉ backend trong mạng Docker truy cập MySQL.
+    # Khi cần xem CSDL bằng MySQL Workbench, bỏ chú thích 2 dòng dưới.
+    # ports:
+    #   - "3306:3306"
+
+    volumes:
+      - civicbot_mysql_data:/var/lib/mysql
+
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "mysqladmin",
+          "ping",
+          "-h",
+          "localhost",
+          "-u",
+          "root",
+          "-p${MYSQL_ROOT_PASSWORD:-root_password}"
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+
+    container_name: civicbot-backend
+    restart: unless-stopped
+
+    env_file:
+      - .env
+
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_PORT: 3306
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-civicbot}
+      MYSQL_USER: ${MYSQL_USER:-civicbot}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-civicbot_password}
+
+      AI_MODE: ${AI_MODE:-gemini}
+      GENERAL_QA: ${GENERAL_QA:-true}
+      GEMINI_TIMEOUT: ${GEMINI_TIMEOUT:-25}
+      GEMINI_RETRIES: ${GEMINI_RETRIES:-2}
+      GEMINI_FALLBACK_MODEL: ${GEMINI_FALLBACK_MODEL:-}
+      GEMINI_MODEL: ${GEMINI_MODEL:-gemini-3.1-flash-lite}
+      ADMIN_API_KEY: ${ADMIN_API_KEY:-}
+      RATE_LIMIT_PER_MINUTE: ${RATE_LIMIT_PER_MINUTE:-30}
+      MAX_UPLOAD_MB: ${MAX_UPLOAD_MB:-5}
+      KEEP_UPLOADS: ${KEEP_UPLOADS:-false}
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:5173,http://127.0.0.1:5173}
+
+      CIVICBOT_FRONTEND_URL: http://localhost:5173
+
+    ports:
+      - "8000:8000"
+
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+    volumes:
+      - ./uploads:/app/uploads
+      - ./data:/app/data
+
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+
+      args:
+        VITE_API_BASE_URL: http://localhost:8000
+
+    container_name: civicbot-frontend
+    restart: unless-stopped
+
+    ports:
+      - "5173:80"
+
+    depends_on:
+      - backend
+
+
+volumes:
+  civicbot_mysql_data:

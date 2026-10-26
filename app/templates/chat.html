@@ -1,0 +1,2819 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CivicBot - Tra cứu thủ tục</title>
+
+    <style>
+        :root {
+            --blue-dark: #0b477f;
+            --blue: #1478c8;
+            --blue-light: #eaf5ff;
+
+            --green: #167548;
+            --green-light: #e9f8ef;
+
+            --orange: #9b6100;
+            --orange-light: #fff4dc;
+
+            --text: #163b63;
+            --muted: #718aa4;
+            --border: #d7e5f1;
+            --background: #eef5fb;
+            --white: #ffffff;
+            --danger: #c73434;
+
+            --shadow: 0 14px 38px rgba(29, 88, 132, 0.13);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            min-height: 100%;
+        }
+
+        body {
+            margin: 0;
+            color: var(--text);
+            background:
+                radial-gradient(
+                    circle at top left,
+                    #ffffff 0,
+                    rgba(255, 255, 255, 0.2) 35%,
+                    transparent 55%
+                ),
+                var(--background);
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        button,
+        textarea,
+        input {
+            font: inherit;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        .app {
+            width: min(1280px, 96vw);
+            margin: 24px auto;
+        }
+
+        /* =========================
+           HEADER
+           ========================= */
+
+        .hero {
+            display: grid;
+            grid-template-columns:
+                minmax(0, 1.2fr)
+                minmax(360px, 0.8fr);
+            gap: 24px;
+            align-items: center;
+            padding: 30px 36px;
+            border-radius: 24px;
+            color: #ffffff;
+            background:
+                radial-gradient(
+                    circle at 82% 0,
+                    rgba(87, 178, 239, 0.42),
+                    transparent 38%
+                ),
+                linear-gradient(135deg, #0a427b, #1779ca);
+            box-shadow: var(--shadow);
+        }
+
+        .hero-kicker {
+            margin: 0 0 8px;
+            color: #cce8ff;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
+        }
+
+        .hero h1 {
+            margin: 0;
+            font-size: clamp(32px, 4vw, 52px);
+            line-height: 1;
+        }
+
+        .hero-subtitle {
+            max-width: 700px;
+            margin: 14px 0 0;
+            color: #e5f3ff;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 9px;
+            margin-top: 18px;
+        }
+
+        .hero-button {
+            padding: 9px 13px;
+            border: 1px solid rgba(255, 255, 255, 0.48);
+            border-radius: 10px;
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.12);
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .hero-button:hover {
+            background: rgba(255, 255, 255, 0.22);
+        }
+
+        .person-card {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            min-height: 140px;
+            padding: 20px;
+            border-radius: 20px;
+            color: var(--text);
+            background: rgba(255, 255, 255, 0.97);
+        }
+
+        .person-avatar {
+            width: 82px;
+            height: 82px;
+            display: grid;
+            flex: 0 0 82px;
+            place-items: center;
+            border-radius: 20px;
+            color: white;
+            background: linear-gradient(
+                135deg,
+                #40a9d4,
+                #2878b6
+            );
+            font-size: 27px;
+            font-weight: 700;
+        }
+
+        .person-card h2 {
+            margin: 0;
+            color: var(--blue-dark);
+            font-size: 18px;
+        }
+
+        .person-card p {
+            margin: 7px 0 0;
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.45;
+        }
+
+        /* =========================
+           BỐ CỤC CHÍNH CỐ ĐỊNH
+           ========================= */
+
+        .dashboard {
+            display: grid;
+            grid-template-columns:
+                minmax(0, 1fr)
+                320px;
+            gap: 18px;
+            align-items: stretch;
+            height: 720px;
+            margin-top: 18px;
+        }
+
+        .panel {
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            background: var(--white);
+            box-shadow: var(--shadow);
+        }
+
+        /* =========================
+           KHUNG CHAT CỐ ĐỊNH
+           ========================= */
+
+        .chat-panel {
+            height: 100%;
+            min-height: 0;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .intro {
+            flex: 0 0 auto;
+            margin: 18px 18px 0;
+            padding: 16px 18px;
+            border: 1px solid #cce3f3;
+            border-radius: 16px;
+            background: linear-gradient(
+                135deg,
+                #f3faff,
+                #ffffff
+            );
+        }
+
+        .intro h2 {
+            margin: 0;
+            color: var(--blue-dark);
+            font-size: 18px;
+        }
+
+        .intro p {
+            margin: 7px 0 0;
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.45;
+        }
+
+        .intro-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+            margin-top: 10px;
+        }
+
+        .intro-tag {
+            padding: 5px 8px;
+            border-radius: 999px;
+            color: #23668f;
+            background: var(--blue-light);
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        /*
+         * Chỉ khu vực này được cuộn.
+         * Tin nhắn cũ sẽ được đẩy lên trên.
+         */
+        .messages {
+            flex: 1 1 auto;
+            min-height: 0;
+            max-height: none;
+            overflow-y: auto;
+            padding: 18px 18px 12px;
+            scroll-behavior: smooth;
+        }
+
+        .message-row {
+            display: flex;
+            margin-bottom: 12px;
+        }
+
+        .message-row.user {
+            justify-content: flex-end;
+        }
+
+        .message {
+            width: min(760px, 84%);
+        }
+
+        .message-row.user .message {
+            width: min(570px, 72%);
+        }
+
+        .message-box {
+            padding: 13px 16px;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            background: #ffffff;
+            box-shadow: 0 4px 12px rgba(
+                40,
+                90,
+                130,
+                0.04
+            );
+        }
+
+        .message-row.bot .message-box {
+            border-bottom-left-radius: 5px;
+        }
+
+        .message-row.user .message-box {
+            border: 0;
+            border-bottom-right-radius: 5px;
+            background: #dcecff;
+        }
+
+        .welcome-box {
+            background: linear-gradient(
+                135deg,
+                #eefaf2,
+                #ffffff
+            );
+        }
+
+        .message-source {
+            display: inline-flex;
+            margin-bottom: 8px;
+            padding: 5px 9px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.25px;
+        }
+
+        .source-local {
+            color: var(--green);
+            background: var(--green-light);
+        }
+
+        .source-gemini {
+            color: var(--orange);
+            background: var(--orange-light);
+        }
+
+        .source-system {
+            color: #14689f;
+            background: var(--blue-light);
+        }
+
+        .message-content {
+            color: var(--text);
+            font-size: 14px;
+            line-height: 1.55;
+            text-align: left;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+        }
+
+        .welcome-content {
+            white-space: normal;
+        }
+
+        .message-row.user .message-content {
+            color: #174e84;
+        }
+
+        .message-meta {
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid #e7eef4;
+            color: var(--muted);
+            font-size: 11px;
+            line-height: 1.4;
+        }
+
+        .message-time {
+            margin-top: 6px;
+            color: var(--muted);
+            font-size: 11px;
+        }
+
+        .message-row.user .message-time {
+            text-align: right;
+        }
+
+        /* =========================
+           NGUỒN THỦ TỤC
+           ========================= */
+
+        .sources {
+            margin-top: 9px;
+            padding-top: 9px;
+            border-top: 1px solid #e5edf4;
+        }
+
+        .sources-title {
+            margin-bottom: 5px;
+            color: #66819d;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .source-link {
+            display: block;
+            margin-top: 3px;
+            overflow: hidden;
+            color: #1f70aa;
+            font-size: 12px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        /* =========================
+           CÂU HỎI GỢI Ý
+           ========================= */
+
+        .suggestions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+            margin-top: 12px;
+        }
+
+        .suggestion {
+            padding: 8px 11px;
+            border: 1px solid #bfdcf2;
+            border-radius: 999px;
+            color: #21628c;
+            background: #f6fbff;
+            font-size: 12px;
+        }
+
+        .suggestion:hover {
+            border-color: #71afd9;
+            background: #eaf5fd;
+        }
+
+        /* =========================
+           ĐANG XỬ LÝ
+           ========================= */
+
+        .typing-box {
+            display: none;
+            width: fit-content;
+            margin: 0 18px 9px;
+            padding: 9px 12px;
+            border: 1px solid var(--border);
+            border-radius: 11px;
+            color: var(--muted);
+            background: #ffffff;
+            font-size: 12px;
+        }
+
+        .typing-box.show {
+            display: block;
+        }
+
+        .typing-dots {
+            margin-left: 4px;
+        }
+
+        .typing-dots span {
+            display: inline-block;
+            width: 5px;
+            height: 5px;
+            margin: 0 2px;
+            border-radius: 50%;
+            background: #7d96ac;
+            animation: blink 1.2s infinite;
+        }
+
+        .typing-dots span:nth-child(2) {
+            animation-delay: 0.15s;
+        }
+
+        .typing-dots span:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        @keyframes blink {
+            0%,
+            60%,
+            100% {
+                opacity: 0.3;
+            }
+
+            30% {
+                opacity: 1;
+            }
+        }
+
+        /* =========================
+           KHUNG NHẬP
+           ========================= */
+
+        #fileInput {
+            display: none;
+        }
+
+        .file-preview {
+            display: none;
+            align-items: center;
+            gap: 8px;
+            margin: 0 16px 9px;
+            padding: 8px 10px;
+            border: 1px solid #cde2f2;
+            border-radius: 9px;
+            color: #356b91;
+            background: #f3faff;
+            font-size: 12px;
+        }
+
+        .file-preview.show {
+            display: flex;
+        }
+
+        .remove-file {
+            margin-left: auto;
+            border: 0;
+            color: var(--danger);
+            background: transparent;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .composer {
+            flex: 0 0 auto;
+            display: grid;
+            grid-template-columns:
+                46px
+                minmax(0, 1fr)
+                82px;
+            gap: 8px;
+            align-items: end;
+            padding: 11px 16px 14px;
+            border-top: 1px solid var(--border);
+            background: #ffffff;
+        }
+
+        .attachment-button,
+        #sendButton {
+            height: 46px;
+            align-self: end;
+        }
+
+        .attachment-button {
+            width: 46px;
+            padding: 0;
+            border: 1px solid #c7ddec;
+            border-radius: 12px;
+            color: var(--blue);
+            background: #f5faff;
+            font-size: 19px;
+        }
+
+        .attachment-button:hover {
+            background: #e8f4ff;
+        }
+
+        .input-wrap {
+            width: 100%;
+            display: flex;
+            align-items: stretch;
+        }
+
+        #questionInput {
+            width: 100%;
+            min-height: 46px;
+            height: 46px;
+            max-height: 120px;
+            resize: none;
+            padding: 11px 13px;
+            border: 1px solid #c7ddec;
+            border-radius: 12px;
+            outline: none;
+            color: var(--text);
+            background: #fbfdff;
+            font-size: 14px;
+            line-height: 1.4;
+            overflow-y: auto;
+        }
+
+        #questionInput:focus {
+            border-color: var(--blue);
+            box-shadow: 0 0 0 3px rgba(
+                43,
+                145,
+                215,
+                0.13
+            );
+        }
+
+        #sendButton {
+            width: 82px;
+            padding: 0 12px;
+            border: 0;
+            border-radius: 12px;
+            color: #ffffff;
+            background: linear-gradient(
+                135deg,
+                #167dca,
+                #0c5da9
+            );
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        #sendButton:hover {
+            transform: translateY(-1px);
+        }
+
+        #sendButton:disabled {
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        /* =========================
+           CỘT BÊN PHẢI
+           ========================= */
+
+        .side-panel {
+            height: 100%;
+            min-height: 0;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .side-panel h2 {
+            margin: 0;
+            color: var(--blue-dark);
+            font-size: 20px;
+        }
+
+        .side-panel h3 {
+            margin: 20px 0 9px;
+            color: var(--blue-dark);
+            font-size: 15px;
+        }
+
+        .logic-list {
+            display: grid;
+            gap: 7px;
+        }
+
+        .logic-item {
+            padding: 10px 11px;
+            border-left: 4px solid #efa11a;
+            border-radius: 9px;
+            color: #31516f;
+            background: #fff8ed;
+            font-size: 12px;
+            line-height: 1.4;
+        }
+
+        .person-detail {
+            padding: 13px;
+            border-radius: 13px;
+            color: #55728f;
+            background: #f5f9fd;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        .status-card {
+            padding: 13px;
+            border-radius: 13px;
+            background: #f5f9fd;
+        }
+
+        .status-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 6px 0;
+            color: #4e6c87;
+            font-size: 12px;
+        }
+
+        .status-value {
+            max-width: 170px;
+            color: #16804d;
+            font-weight: 700;
+            text-align: right;
+        }
+
+        .status-error {
+            color: var(--danger);
+        }
+
+        .check-button {
+            width: 100%;
+            margin-top: 9px;
+            padding: 9px 10px;
+            border: 0;
+            border-radius: 10px;
+            color: #ffffff;
+            background: var(--blue);
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .check-button:hover {
+            background: var(--blue-dark);
+        }
+
+        .inline-notice {
+            display: none;
+            margin-top: 9px;
+            padding: 9px;
+            border-radius: 9px;
+            font-size: 11px;
+            line-height: 1.4;
+        }
+
+        .inline-notice.show {
+            display: block;
+        }
+
+        .inline-notice.success {
+            color: #176b45;
+            background: #eaf8ef;
+        }
+
+        .inline-notice.error {
+            color: #a52f2f;
+            background: #ffeded;
+        }
+
+        .footer-note {
+            margin: 14px 0 0;
+            color: var(--muted);
+            font-size: 11px;
+            line-height: 1.5;
+        }
+
+        /* =========================
+           MODAL LỊCH SỬ
+           ========================= */
+
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            z-index: 20;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 18px;
+            background: rgba(7, 38, 71, 0.45);
+        }
+
+        .modal-backdrop.show {
+            display: flex;
+        }
+
+        .modal {
+            width: min(760px, 100%);
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 20px;
+            border-radius: 18px;
+            background: #ffffff;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.22);
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+            color: var(--blue-dark);
+            font-size: 19px;
+        }
+
+        .modal-close {
+            border: 0;
+            color: #718aa3;
+            background: transparent;
+            font-size: 24px;
+        }
+
+        .history-toolbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin: 14px 0 10px;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .clear-history-button {
+            padding: 7px 10px;
+            border: 0;
+            border-radius: 8px;
+            color: #ffffff;
+            background: var(--danger);
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .history-list {
+            display: grid;
+            gap: 10px;
+            max-height: 58vh;
+            overflow-y: auto;
+        }
+
+        .history-item {
+            padding: 13px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: #f9fcff;
+        }
+
+        .history-question {
+            color: #123f6a;
+            font-size: 13px;
+            font-weight: 700;
+            line-height: 1.45;
+        }
+
+        .history-answer {
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid #e1ebf3;
+            color: #4e6e89;
+            font-size: 12px;
+            line-height: 1.5;
+            white-space: pre-wrap;
+        }
+
+        .history-info {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            margin-top: 9px;
+            color: #8aa0b5;
+            font-size: 11px;
+        }
+
+        .history-delete {
+            padding: 5px 8px;
+            border: 0;
+            border-radius: 7px;
+            color: #b72e2e;
+            background: #ffeded;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .history-empty {
+            padding: 24px 12px;
+            color: var(--muted);
+            text-align: center;
+        }
+
+        /* =========================
+           RESPONSIVE
+           ========================= */
+
+        @media (max-width: 980px) {
+            .hero {
+                grid-template-columns: 1fr;
+            }
+
+            .person-card {
+                max-width: 620px;
+            }
+
+            .dashboard {
+                grid-template-columns: 1fr;
+                height: auto;
+            }
+
+            .chat-panel {
+                height: 680px;
+            }
+
+            .side-panel {
+                height: auto;
+                max-height: none;
+                overflow: visible;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .app {
+                width: 100%;
+                margin: 0;
+            }
+
+            .hero {
+                padding: 25px 18px;
+                border-radius: 0 0 20px 20px;
+            }
+
+            .hero-subtitle {
+                font-size: 14px;
+            }
+
+            .person-card {
+                min-height: 0;
+                padding: 15px;
+            }
+
+            .person-avatar {
+                width: 62px;
+                height: 62px;
+                flex-basis: 62px;
+                border-radius: 15px;
+                font-size: 22px;
+            }
+
+            .dashboard {
+                display: grid;
+                grid-template-columns: 1fr;
+                height: auto;
+                gap: 13px;
+                margin-top: 13px;
+            }
+
+            .chat-panel {
+                height: 620px;
+            }
+
+            .messages {
+                min-height: 0;
+                max-height: none;
+                padding: 14px 12px 8px;
+            }
+
+            .message,
+            .message-row.user .message {
+                width: 94%;
+            }
+
+            .message-box {
+                padding: 12px 14px;
+            }
+
+            .composer {
+                grid-template-columns:
+                    42px
+                    minmax(0, 1fr)
+                    64px;
+                gap: 6px;
+                padding: 10px 12px 12px;
+            }
+
+            .attachment-button,
+            #sendButton {
+                height: 42px;
+            }
+
+            .attachment-button {
+                width: 42px;
+            }
+
+            #questionInput {
+                min-height: 42px;
+                height: 42px;
+                padding: 10px 11px;
+            }
+
+            #sendButton {
+                width: 64px;
+                padding: 0 8px;
+            }
+        }
+    
+
+        /* =========================
+           MODAL KIỂM THỬ HỆ THỐNG
+           ========================= */
+
+        .system-test-modal {
+            position: fixed;
+            z-index: 1000;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            background: rgba(10, 30, 55, 0.62);
+        }
+
+        .system-test-modal[hidden] { display: none; }
+
+        .system-test-dialog {
+            width: min(1040px, 96vw);
+            max-height: 90vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            background: #ffffff;
+            box-shadow: 0 24px 70px rgba(12, 44, 78, 0.28);
+        }
+
+        .system-test-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 22px 26px 16px;
+            border-bottom: 1px solid #e4edf5;
+        }
+
+        .system-test-header h2 {
+            margin: 0;
+            color: var(--blue-dark);
+            font-size: 22px;
+        }
+
+        .system-test-header p {
+            margin: 8px 0 0;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .system-test-close {
+            width: 34px;
+            height: 34px;
+            border: 0;
+            border-radius: 50%;
+            color: #647c93;
+            background: #eef4f8;
+            font-size: 23px;
+            line-height: 1;
+            cursor: pointer;
+        }
+
+        .system-test-toolbar {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 16px 26px;
+            background: #f7fafd;
+        }
+
+        .system-test-toolbar label {
+            color: #234765;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .system-test-select {
+            min-height: 40px;
+            padding: 0 12px;
+            border: 1px solid #cbddea;
+            border-radius: 10px;
+            color: #234765;
+            background: #ffffff;
+            font-size: 14px;
+        }
+
+        .system-test-run-button {
+            min-height: 40px;
+            padding: 0 16px;
+            border: 0;
+            border-radius: 10px;
+            color: #ffffff;
+            background: var(--blue);
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .system-test-run-button:hover {
+            background: var(--blue-dark);
+        }
+
+        .system-test-run-button:disabled {
+            opacity: 0.65;
+            cursor: wait;
+        }
+
+        .system-test-summary {
+            margin: 16px 26px 0;
+            padding: 14px 16px;
+            border-radius: 12px;
+            color: #24516f;
+            background: #edf5fb;
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .system-test-summary.pass {
+            color: #146c46;
+            background: #e9f8ef;
+        }
+
+        .system-test-summary.fail {
+            color: #a32222;
+            background: #fff0f0;
+        }
+
+        .system-test-note {
+            margin: 10px 26px;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .system-test-results {
+            min-height: 160px;
+            overflow-y: auto;
+            padding: 4px 26px 24px;
+        }
+
+        .system-test-card {
+            margin-top: 10px;
+            padding: 13px 15px;
+            border: 1px solid var(--border);
+            border-radius: 13px;
+        }
+
+        .system-test-card.pass {
+            border-color: #c9ead8;
+            background: #effbf4;
+        }
+
+        .system-test-card.fail {
+            border-color: #f0caca;
+            background: #fff4f4;
+        }
+
+        .system-test-card-title {
+            color: #173e60;
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .system-test-card-meta {
+            margin-top: 5px;
+            color: #6f879b;
+            font-size: 12px;
+        }
+
+        .system-test-card-detail {
+            margin-top: 8px;
+            color: #31536d;
+            font-size: 13px;
+            line-height: 1.5;
+            white-space: pre-wrap;
+        }
+
+        @media (max-width: 640px) {
+            .system-test-modal {
+                align-items: flex-start;
+                padding: 10px;
+            }
+
+            .system-test-dialog {
+                width: 100%;
+                max-height: 96vh;
+                border-radius: 15px;
+            }
+
+            .system-test-header {
+                padding: 17px;
+            }
+
+            .system-test-header h2 {
+                font-size: 18px;
+            }
+
+            .system-test-toolbar {
+                padding: 14px 17px;
+            }
+
+            .system-test-results {
+                padding: 4px 17px 17px;
+            }
+
+            .system-test-summary,
+            .system-test-note {
+                margin-left: 17px;
+                margin-right: 17px;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+<div class="app">
+
+    <header class="hero">
+        <section>
+            <p class="hero-kicker">
+                CivicBot Modern RAG
+            </p>
+
+            <h1>CivicBot</h1>
+
+            <p class="hero-subtitle">
+                Trợ lý AI hỗ trợ tra cứu thủ tục cư trú và giấy tờ tùy thân.
+                Hệ thống ưu tiên dữ liệu nội bộ và chỉ chuyển sang Gemini khi cần thiết.
+            </p>
+
+            <div class="hero-actions">
+                <button
+                    id="testSystemButton"
+                    class="hero-button"
+                    type="button"
+                >
+                    Kiểm thử hệ thống
+                </button>
+
+                <button
+                    id="manageFaqButton"
+                    class="hero-button"
+                    type="button"
+                >
+                    Lịch sử hỏi đáp
+                </button>
+            </div>
+
+            <div
+                id="topNotice"
+                class="inline-notice"
+                aria-live="polite"
+            ></div>
+        </section>
+
+        <section class="person-card">
+            <div class="person-avatar">
+                CB
+            </div>
+
+            <div>
+                <h2>Thông tin dự án</h2>
+
+                <p>
+                    <strong>Đề tài:</strong><br>
+                    Chatbot AI hỗ trợ tra cứu thủ tục cư trú và giấy tờ tùy thân
+                </p>
+
+                <p>
+                    <strong>Người thực hiện:</strong><br>
+                    Trần Thu Phương và Lê Văn Đạt
+                </p>
+            </div>
+        </section>
+    </header>
+
+    <main class="dashboard">
+
+        <section class="panel chat-panel">
+
+            <div class="intro">
+                <h2>Tra cứu nhanh thủ tục hành chính</h2>
+
+                <p>
+                    Nhập câu hỏi cụ thể hoặc gửi ảnh, PDF, DOCX để CivicBot hỗ trợ.
+                    Câu trả lời được phân biệt giữa CSDL nội bộ và Gemini.
+                </p>
+
+                <div class="intro-tags">
+                    <span class="intro-tag">
+                        CSDL nội bộ ưu tiên
+                    </span>
+
+                    <span class="intro-tag">
+                        Gemini dự phòng
+                    </span>
+
+                    <span class="intro-tag">
+                        Có nguồn thủ tục
+                    </span>
+                </div>
+            </div>
+
+            <div
+                id="messages"
+                class="messages"
+            >
+                <div class="message-row bot">
+                    <div class="message">
+                        <div class="message-box welcome-box">
+
+                            <div class="message-source source-local">
+                                CSDL NỘI BỘ
+                            </div>
+
+                            <div class="message-content welcome-content">
+                                Xin chào! Tôi là CivicBot. Tôi có thể giúp bạn tra cứu thủ tục cư trú và giấy tờ tùy thân.
+                            </div>
+
+                            <div class="message-meta">
+                                Dữ liệu nội bộ luôn được ưu tiên trước khi chuyển sang Gemini.
+                            </div>
+
+                            <div class="suggestions">
+                                <button
+                                    class="suggestion"
+                                    type="button"
+                                    data-question="Đăng ký tạm trú cần giấy tờ gì?"
+                                >
+                                    Đăng ký tạm trú cần giấy tờ gì?
+                                </button>
+
+                                <button
+                                    class="suggestion"
+                                    type="button"
+                                    data-question="Khai báo tạm vắng cần làm gì?"
+                                >
+                                    Khai báo tạm vắng cần làm gì?
+                                </button>
+
+                                <button
+                                    class="suggestion"
+                                    type="button"
+                                    data-question="Cấp lại thẻ căn cước cần giấy tờ gì?"
+                                >
+                                    Cấp lại thẻ căn cước cần giấy tờ gì?
+                                </button>
+                            </div>
+
+                            <div class="message-time">
+                                CivicBot
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    id="typingBox"
+                    class="typing-box"
+                >
+                    CivicBot đang xử lý
+
+                    <span class="typing-dots">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </span>
+                </div>
+            </div>
+
+            <div
+                id="filePreview"
+                class="file-preview"
+            >
+                <span>📎</span>
+                <span id="fileName"></span>
+
+                <button
+                    id="removeFileButton"
+                    class="remove-file"
+                    type="button"
+                >
+                    Xóa
+                </button>
+            </div>
+
+            <form
+                id="chatForm"
+                class="composer"
+            >
+                <button
+                    id="attachmentButton"
+                    class="attachment-button"
+                    type="button"
+                    title="Đính kèm tệp"
+                >
+                    📎
+                </button>
+
+                <input
+                    id="fileInput"
+                    type="file"
+                    accept="image/*,.pdf,.doc,.docx"
+                >
+
+                <div class="input-wrap">
+                    <textarea
+                        id="questionInput"
+                        rows="1"
+                        placeholder="Nhập câu hỏi của bạn..."
+                        autocomplete="off"
+                    ></textarea>
+                </div>
+
+                <button
+                    id="sendButton"
+                    type="submit"
+                >
+                    Gửi
+                </button>
+            </form>
+        </section>
+
+        <aside class="panel side-panel">
+            <h2>Thông tin vận hành</h2>
+
+            <h3>Logic xử lý</h3>
+
+            <div class="logic-list">
+                <div class="logic-item">
+                    1. Tiếp nhận câu hỏi hoặc tệp đính kèm
+                </div>
+
+                <div class="logic-item">
+                    2. Tìm kiếm trong CSDL nội bộ
+                </div>
+
+                <div class="logic-item">
+                    3. Có dữ liệu → trả lời nội bộ
+                </div>
+
+                <div class="logic-item">
+                    4. Chưa có dữ liệu → gọi Gemini
+                </div>
+
+                <div class="logic-item">
+                    5. Hiển thị nguồn thủ tục
+                </div>
+
+                <div class="logic-item">
+                    6. Trả kết quả đúng trọng tâm
+                </div>
+            </div>
+
+            <h3>Người thực hiện</h3>
+
+            <div class="person-detail">
+                <strong>Họ và tên:</strong>
+                Trần Thu Phương và Lê Văn Đạt
+                <br>
+
+                <strong>Đề tài:</strong>
+                CivicBot
+                <br>
+
+                <strong>Phạm vi:</strong>
+                Thủ tục cư trú và giấy tờ tùy thân
+                <br>
+
+                <strong>Công nghệ:</strong>
+                FastAPI, MySQL, Gemini API
+            </div>
+
+            <h3>Trạng thái hệ thống</h3>
+
+            <div class="status-card">
+                <div class="status-row">
+                    <span>Backend</span>
+
+                    <span
+                        id="backendStatus"
+                        class="status-value"
+                    >
+                        Đang kiểm tra...
+                    </span>
+                </div>
+
+                <div class="status-row">
+                    <span>Cơ sở dữ liệu</span>
+
+                    <span
+                        id="databaseStatus"
+                        class="status-value"
+                    >
+                        Đang kiểm tra...
+                    </span>
+                </div>
+
+                <div class="status-row">
+                    <span>Gemini API</span>
+
+                    <span
+                        id="geminiStatus"
+                        class="status-value"
+                    >
+                        Đang kiểm tra...
+                    </span>
+                </div>
+
+                <button
+                    id="checkGeminiButton"
+                    class="check-button"
+                    type="button"
+                >
+                    Kiểm tra Gemini
+                </button>
+
+                <div
+                    id="statusNotice"
+                    class="inline-notice"
+                ></div>
+            </div>
+
+            <p class="footer-note">
+                CSDL nội bộ luôn được ưu tiên. Gemini chỉ được gọi khi hệ thống
+                chưa tìm thấy dữ liệu phù hợp hoặc người dùng gửi tệp cần phân tích.
+            </p>
+        </aside>
+    </main>
+</div>
+
+
+
+<!-- Modal kiểm thử hệ thống -->
+<div id="systemTestModal" class="system-test-modal" hidden>
+    <div
+        class="system-test-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="systemTestTitle"
+    >
+        <div class="system-test-header">
+            <div>
+                <h2 id="systemTestTitle">
+                    🧪 Kiểm thử CivicBot – Chương 5
+                </h2>
+                <p>
+                    Unit → Integration → System → Acceptance → Regression
+                </p>
+            </div>
+
+            <button
+                id="closeSystemTestButton"
+                type="button"
+                class="system-test-close"
+                aria-label="Đóng cửa sổ kiểm thử"
+            >
+                ×
+            </button>
+        </div>
+
+        <div class="system-test-toolbar">
+            <label for="systemTestSuite">
+                Bộ kiểm thử
+            </label>
+
+            <select id="systemTestSuite" class="system-test-select">
+                <option value="quick">Kiểm thử nhanh</option>
+                <option value="ui">Kiểm thử giao diện</option>
+                <option value="regression" selected>Kiểm thử hồi quy</option>
+                <option value="all">Chạy tất cả</option>
+            </select>
+
+            <button
+                id="runSystemTestButton"
+                type="button"
+                class="system-test-run-button"
+            >
+                ▶ Chạy kiểm thử
+            </button>
+        </div>
+
+        <div id="systemTestSummary" class="system-test-summary">
+            Chưa chạy kiểm thử.
+        </div>
+
+        <div class="system-test-note">
+            Bộ kiểm thử nội bộ không gọi Gemini và không tiêu tốn API quota.
+        </div>
+
+        <div id="systemTestResults" class="system-test-results"></div>
+    </div>
+</div>
+
+<!-- Modal lịch sử hỏi đáp -->
+<div
+    id="historyModal"
+    class="modal-backdrop"
+>
+    <div
+        class="modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="historyTitle"
+    >
+        <div class="modal-header">
+            <h2 id="historyTitle">
+                Lịch sử hỏi đáp
+            </h2>
+
+            <button
+                id="closeHistoryButton"
+                class="modal-close"
+                type="button"
+            >
+                ×
+            </button>
+        </div>
+
+        <div class="history-toolbar">
+            <span id="historyCount">
+                Đang tải lịch sử...
+            </span>
+
+            <button
+                id="clearHistoryButton"
+                class="clear-history-button"
+                type="button"
+            >
+                Xóa toàn bộ
+            </button>
+        </div>
+
+        <div
+            id="historyNotice"
+            class="inline-notice"
+        ></div>
+
+        <div
+            id="historyList"
+            class="history-list"
+        ></div>
+    </div>
+</div>
+
+<script>
+    const messages =
+        document.getElementById("messages");
+
+    const chatForm =
+        document.getElementById("chatForm");
+
+    const questionInput =
+        document.getElementById("questionInput");
+
+    const sendButton =
+        document.getElementById("sendButton");
+
+    const typingBox =
+        document.getElementById("typingBox");
+
+    const attachmentButton =
+        document.getElementById("attachmentButton");
+
+    const fileInput =
+        document.getElementById("fileInput");
+
+    const filePreview =
+        document.getElementById("filePreview");
+
+    const fileName =
+        document.getElementById("fileName");
+
+    const removeFileButton =
+        document.getElementById("removeFileButton");
+
+    const backendStatus =
+        document.getElementById("backendStatus");
+
+    const databaseStatus =
+        document.getElementById("databaseStatus");
+
+    const geminiStatus =
+        document.getElementById("geminiStatus");
+
+    const statusNotice =
+        document.getElementById("statusNotice");
+
+    const topNotice =
+        document.getElementById("topNotice");
+
+    const testSystemButton =
+        document.getElementById("testSystemButton");
+
+    const checkGeminiButton =
+        document.getElementById("checkGeminiButton");
+
+    const manageFaqButton =
+        document.getElementById("manageFaqButton");
+
+    const historyModal =
+        document.getElementById("historyModal");
+
+    const closeHistoryButton =
+        document.getElementById("closeHistoryButton");
+
+    const clearHistoryButton =
+        document.getElementById("clearHistoryButton");
+
+    const historyList =
+        document.getElementById("historyList");
+
+    const historyCount =
+        document.getElementById("historyCount");
+
+    const historyNotice =
+        document.getElementById("historyNotice");
+
+
+    function getTime() {
+        return new Date().toLocaleTimeString(
+            "vi-VN",
+            {
+                hour: "2-digit",
+                minute: "2-digit"
+            }
+        );
+    }
+
+
+    function scrollToBottom() {
+        messages.scrollTop =
+            messages.scrollHeight;
+    }
+
+
+    function resizeTextarea() {
+        questionInput.style.height =
+            "46px";
+
+        const newHeight =
+            Math.min(
+                questionInput.scrollHeight,
+                120
+            );
+
+        questionInput.style.height =
+            `${newHeight}px`;
+    }
+
+
+    function showNotice(
+        element,
+        message,
+        type
+    ) {
+        element.textContent =
+            message;
+
+        element.className =
+            `inline-notice show ${type}`;
+    }
+
+
+    function hideNotice(element) {
+        element.textContent =
+            "";
+
+        element.className =
+            "inline-notice";
+    }
+
+
+    function getSource(
+        sourceType,
+        sourceLabel
+    ) {
+        const type =
+            String(
+                sourceType || ""
+            ).toLowerCase();
+
+        const label =
+            String(
+                sourceLabel || ""
+            ).toLowerCase();
+
+        if (
+            type.includes("gemini")
+            || label.includes("gemini")
+        ) {
+            return {
+                className: "source-gemini",
+                label: "GEMINI"
+            };
+        }
+
+        if (
+            type.includes("local")
+            || type.includes("internal")
+            || type.includes("database")
+            || label.includes("nội bộ")
+            || label.includes("csdl")
+        ) {
+            return {
+                className: "source-local",
+                label: "CSDL NỘI BỘ"
+            };
+        }
+
+        return {
+            className: "source-system",
+            label: sourceLabel || "HỆ THỐNG"
+        };
+    }
+
+
+    function createMessage(
+        content,
+        sourceType,
+        sourceLabel,
+        meta,
+        isUser = false
+    ) {
+        const row =
+            document.createElement("div");
+
+        row.className =
+            `message-row ${isUser ? "user" : "bot"}`;
+
+        const message =
+            document.createElement("div");
+
+        message.className =
+            "message";
+
+        const box =
+            document.createElement("div");
+
+        box.className =
+            "message-box";
+
+        if (!isUser) {
+            const source =
+                getSource(
+                    sourceType,
+                    sourceLabel
+                );
+
+            const badge =
+                document.createElement("div");
+
+            badge.className =
+                `message-source ${source.className}`;
+
+            badge.textContent =
+                source.label;
+
+            box.appendChild(badge);
+        }
+
+        const contentElement =
+            document.createElement("div");
+
+        contentElement.className =
+            "message-content";
+
+        contentElement.textContent =
+            content || "";
+
+        box.appendChild(contentElement);
+
+        if (meta && !isUser) {
+            const metaElement =
+                document.createElement("div");
+
+            metaElement.className =
+                "message-meta";
+
+            metaElement.textContent =
+                meta;
+
+            box.appendChild(metaElement);
+        }
+
+        const timeElement =
+            document.createElement("div");
+
+        timeElement.className =
+            "message-time";
+
+        timeElement.textContent =
+            isUser
+                ? getTime()
+                : "CivicBot";
+
+        box.appendChild(timeElement);
+
+        message.appendChild(box);
+        row.appendChild(message);
+
+        return row;
+    }
+
+
+    function addUserMessage(content) {
+        messages.insertBefore(
+            createMessage(
+                content,
+                "",
+                "",
+                "",
+                true
+            ),
+            typingBox
+        );
+
+        scrollToBottom();
+    }
+
+
+    function addBotMessage(
+        content,
+        sourceType = "system",
+        sourceLabel = "HỆ THỐNG",
+        meta = ""
+    ) {
+        messages.insertBefore(
+            createMessage(
+                content,
+                sourceType,
+                sourceLabel,
+                meta,
+                false
+            ),
+            typingBox
+        );
+
+        scrollToBottom();
+    }
+
+
+    function addSources(sources) {
+        if (
+            !Array.isArray(sources)
+            || sources.length === 0
+        ) {
+            return;
+        }
+
+        const botRows = [
+            ...messages.querySelectorAll(
+                ".message-row.bot"
+            )
+        ];
+
+        const lastBotRow =
+            botRows.at(-1);
+
+        if (!lastBotRow) {
+            return;
+        }
+
+        const box =
+            lastBotRow.querySelector(
+                ".message-box"
+            );
+
+        if (!box) {
+            return;
+        }
+
+        const sourceBox =
+            document.createElement("div");
+
+        sourceBox.className =
+            "sources";
+
+        const title =
+            document.createElement("div");
+
+        title.className =
+            "sources-title";
+
+        title.textContent =
+            "Nguồn thủ tục";
+
+        sourceBox.appendChild(title);
+
+        sources.forEach(source => {
+            if (
+                !source
+                || !source.url
+            ) {
+                return;
+            }
+
+            const link =
+                document.createElement("a");
+
+            link.className =
+                "source-link";
+
+            link.href =
+                source.url;
+
+            link.target =
+                "_blank";
+
+            link.rel =
+                "noopener noreferrer";
+
+            link.textContent =
+                source.title || source.url;
+
+            sourceBox.appendChild(link);
+        });
+
+        box.appendChild(sourceBox);
+    }
+
+
+    function showTyping(show) {
+        typingBox.classList.toggle(
+            "show",
+            show
+        );
+
+        scrollToBottom();
+    }
+
+
+    function showFile(file) {
+        if (!file) {
+            filePreview.classList.remove(
+                "show"
+            );
+
+            fileName.textContent =
+                "";
+
+            return;
+        }
+
+        fileName.textContent =
+            file.name;
+
+        filePreview.classList.add(
+            "show"
+        );
+    }
+
+
+    function clearFile() {
+        fileInput.value =
+            "";
+
+        showFile(null);
+    }
+
+
+    async function sendQuestion() {
+        const question =
+            questionInput.value.trim();
+
+        const file =
+            fileInput.files[0] || null;
+
+        if (
+            (!question && !file)
+            || sendButton.disabled
+        ) {
+            return;
+        }
+
+        addUserMessage(
+            question
+            || `Đã đính kèm tệp: ${file.name}`
+        );
+
+        questionInput.value =
+            "";
+
+        resizeTextarea();
+
+        sendButton.disabled =
+            true;
+
+        questionInput.disabled =
+            true;
+
+        attachmentButton.disabled =
+            true;
+
+        showTyping(true);
+
+        const formData =
+            new FormData();
+
+        formData.append(
+            "question",
+            question
+        );
+
+        if (file) {
+            formData.append(
+                "file",
+                file
+            );
+        }
+
+        try {
+            const response =
+                await fetch(
+                    "/api/chat",
+                    {
+                        method: "POST",
+                        body: formData
+                    }
+                );
+
+            const data =
+                await response.json();
+
+            if (!response.ok) {
+                throw new Error(
+                    data.detail
+                    || "Máy chủ không thể xử lý câu hỏi."
+                );
+            }
+
+            showTyping(false);
+
+            if (
+                Array.isArray(
+                    data.answer_blocks
+                )
+                && data.answer_blocks.length > 0
+            ) {
+                data.answer_blocks.forEach(
+                    block => {
+                        addBotMessage(
+                            block.content || "",
+                            block.source_type || "system",
+                            block.source_label || "HỆ THỐNG",
+                            block.meta || ""
+                        );
+                    }
+                );
+
+                addSources(
+                    data.sources || []
+                );
+            } else {
+                addBotMessage(
+                    "Xin lỗi, hệ thống chưa nhận được nội dung trả lời.",
+                    "system",
+                    "HỆ THỐNG"
+                );
+            }
+
+            clearFile();
+
+        } catch (error) {
+            showTyping(false);
+
+            addBotMessage(
+                error.message
+                || "Không thể kết nối đến máy chủ.",
+                "system",
+                "HỆ THỐNG",
+                "Bạn hãy kiểm tra FastAPI và thử lại."
+            );
+        } finally {
+            sendButton.disabled =
+                false;
+
+            questionInput.disabled =
+                false;
+
+            attachmentButton.disabled =
+                false;
+
+            questionInput.focus();
+
+            scrollToBottom();
+        }
+    }
+
+
+    async function loadStatus() {
+        try {
+            const response =
+                await fetch(
+                    "/api/status"
+                );
+
+            const data =
+                await response.json();
+
+            backendStatus.textContent =
+                data.backend === "ok"
+                    ? "OK"
+                    : "Lỗi";
+
+            databaseStatus.textContent =
+                data.database === "ok"
+                    ? "OK"
+                    : "Chưa kết nối";
+
+            geminiStatus.textContent =
+                data.gemini === "configured"
+                    ? "Đã cấu hình"
+                    : "Chưa cấu hình";
+
+        } catch (error) {
+            backendStatus.textContent =
+                "Lỗi kết nối";
+
+            databaseStatus.textContent =
+                "Chưa kiểm tra";
+
+            geminiStatus.textContent =
+                "Chưa kiểm tra";
+
+            backendStatus.className =
+                "status-value status-error";
+
+            databaseStatus.className =
+                "status-value status-error";
+
+            geminiStatus.className =
+                "status-value status-error";
+        }
+    }
+
+
+    async function checkGemini() {
+        checkGeminiButton.disabled =
+            true;
+
+        checkGeminiButton.textContent =
+            "Đang kiểm tra...";
+
+        hideNotice(statusNotice);
+
+        try {
+            const response =
+                await fetch(
+                    "/api/check-gemini"
+                );
+
+            const data =
+                await response.json();
+
+            if (data.ok) {
+                geminiStatus.textContent =
+                    "Hoạt động";
+
+                geminiStatus.className =
+                    "status-value";
+
+                showNotice(
+                    statusNotice,
+                    data.message
+                    || "Gemini API đang hoạt động.",
+                    "success"
+                );
+            } else {
+                geminiStatus.textContent =
+                    "Không hoạt động";
+
+                geminiStatus.className =
+                    "status-value status-error";
+
+                showNotice(
+                    statusNotice,
+                    data.message
+                    || "Không thể kiểm tra Gemini.",
+                    "error"
+                );
+            }
+
+        } catch (error) {
+            geminiStatus.textContent =
+                "Không kiểm tra được";
+
+            geminiStatus.className =
+                "status-value status-error";
+
+            showNotice(
+                statusNotice,
+                "Không thể kết nối đến API kiểm tra Gemini.",
+                "error"
+            );
+        } finally {
+            checkGeminiButton.disabled =
+                false;
+
+            checkGeminiButton.textContent =
+                "Kiểm tra Gemini";
+        }
+    }
+
+
+    async function testSystem() {
+        showNotice(
+            topNotice,
+            "Đang kiểm tra hệ thống...",
+            "success"
+        );
+
+        await loadStatus();
+        await checkGemini();
+
+        showNotice(
+            topNotice,
+            "Đã hoàn tất kiểm tra hệ thống.",
+            "success"
+        );
+    }
+
+
+    function formatHistoryDate(value) {
+        if (!value) {
+            return "";
+        }
+
+        try {
+            return new Date(
+                value.replace(" ", "T")
+            ).toLocaleString("vi-VN");
+        } catch (error) {
+            return value;
+        }
+    }
+
+
+    function showHistoryNotice(
+        message,
+        type
+    ) {
+        historyNotice.textContent =
+            message;
+
+        historyNotice.className =
+            `inline-notice show ${type}`;
+    }
+
+
+    async function loadHistory() {
+        historyList.innerHTML =
+            `<div class="history-empty">
+                Đang tải lịch sử hỏi đáp...
+            </div>`;
+
+        try {
+            const response =
+                await fetch(
+                    "/api/history?limit=100"
+                );
+
+            const data =
+                await response.json();
+
+            const items =
+                Array.isArray(data.items)
+                    ? data.items
+                    : [];
+
+            historyCount.textContent =
+                `${items.length} lượt hỏi đáp`;
+
+            historyList.innerHTML =
+                "";
+
+            if (items.length === 0) {
+                historyList.innerHTML =
+                    `<div class="history-empty">
+                        Chưa có lịch sử hỏi đáp.
+                    </div>`;
+
+                return;
+            }
+
+            items.forEach(item => {
+                const historyItem =
+                    document.createElement("div");
+
+                historyItem.className =
+                    "history-item";
+
+                const question =
+                    document.createElement("div");
+
+                question.className =
+                    "history-question";
+
+                question.textContent =
+                    `Câu hỏi: ${item.question}`;
+
+                const answer =
+                    document.createElement("div");
+
+                answer.className =
+                    "history-answer";
+
+                answer.textContent =
+                    `Trả lời: ${item.answer}`;
+
+                const info =
+                    document.createElement("div");
+
+                info.className =
+                    "history-info";
+
+                const metadata =
+                    document.createElement("span");
+
+                metadata.textContent =
+                    `${item.source_label || "HỆ THỐNG"} • ${
+                        formatHistoryDate(
+                            item.created_at
+                        )
+                    }`;
+
+                const deleteButton =
+                    document.createElement("button");
+
+                deleteButton.className =
+                    "history-delete";
+
+                deleteButton.type =
+                    "button";
+
+                deleteButton.textContent =
+                    "Xóa";
+
+                deleteButton.addEventListener(
+                    "click",
+                    () => deleteHistory(item.id)
+                );
+
+                info.appendChild(metadata);
+                info.appendChild(deleteButton);
+
+                historyItem.appendChild(question);
+                historyItem.appendChild(answer);
+                historyItem.appendChild(info);
+
+                historyList.appendChild(
+                    historyItem
+                );
+            });
+
+        } catch (error) {
+            historyCount.textContent =
+                "Không thể tải lịch sử";
+
+            historyList.innerHTML =
+                `<div class="history-empty">
+                    Không thể kết nối đến máy chủ.
+                </div>`;
+        }
+    }
+
+
+    async function deleteHistory(historyId) {
+        try {
+            const response =
+                await fetch(
+                    `/api/history/${historyId}`,
+                    {
+                        method: "DELETE"
+                    }
+                );
+
+            const data =
+                await response.json();
+
+            if (data.ok) {
+                await loadHistory();
+
+                showHistoryNotice(
+                    "Đã xóa bản ghi lịch sử.",
+                    "success"
+                );
+            } else {
+                showHistoryNotice(
+                    data.message
+                    || "Không thể xóa bản ghi.",
+                    "error"
+                );
+            }
+
+        } catch (error) {
+            showHistoryNotice(
+                "Không thể kết nối đến máy chủ.",
+                "error"
+            );
+        }
+    }
+
+
+    async function clearHistory() {
+        try {
+            const response =
+                await fetch(
+                    "/api/history",
+                    {
+                        method: "DELETE"
+                    }
+                );
+
+            const data =
+                await response.json();
+
+            if (data.ok) {
+                await loadHistory();
+
+                showHistoryNotice(
+                    "Đã xóa toàn bộ lịch sử hỏi đáp.",
+                    "success"
+                );
+            } else {
+                showHistoryNotice(
+                    "Không thể xóa lịch sử.",
+                    "error"
+                );
+            }
+
+        } catch (error) {
+            showHistoryNotice(
+                "Không thể kết nối đến máy chủ.",
+                "error"
+            );
+        }
+    }
+
+
+    attachmentButton.addEventListener(
+        "click",
+        () => fileInput.click()
+    );
+
+
+    fileInput.addEventListener(
+        "change",
+        () => {
+            showFile(
+                fileInput.files[0] || null
+            );
+        }
+    );
+
+
+    removeFileButton.addEventListener(
+        "click",
+        clearFile
+    );
+
+
+    chatForm.addEventListener(
+        "submit",
+        event => {
+            event.preventDefault();
+            sendQuestion();
+        }
+    );
+
+
+    questionInput.addEventListener(
+        "input",
+        resizeTextarea
+    );
+
+
+    questionInput.addEventListener(
+        "keydown",
+        event => {
+            if (
+                event.key === "Enter"
+                && !event.shiftKey
+            ) {
+                event.preventDefault();
+                sendQuestion();
+            }
+        }
+    );
+
+
+    document.querySelectorAll(
+        ".suggestion"
+    ).forEach(button => {
+        button.addEventListener(
+            "click",
+            () => {
+                questionInput.value =
+                    button.dataset.question || "";
+
+                resizeTextarea();
+                questionInput.focus();
+                sendQuestion();
+            }
+        );
+    });
+
+
+    testSystemButton.addEventListener(
+        "click",
+        testSystem
+    );
+
+
+    checkGeminiButton.addEventListener(
+        "click",
+        checkGemini
+    );
+
+
+    manageFaqButton.addEventListener(
+        "click",
+        async () => {
+            historyModal.classList.add(
+                "show"
+            );
+
+            historyNotice.className =
+                "inline-notice";
+
+            await loadHistory();
+        }
+    );
+
+
+    closeHistoryButton.addEventListener(
+        "click",
+        () => {
+            historyModal.classList.remove(
+                "show"
+            );
+        }
+    );
+
+
+    historyModal.addEventListener(
+        "click",
+        event => {
+            if (
+                event.target === historyModal
+            ) {
+                historyModal.classList.remove(
+                    "show"
+                );
+            }
+        }
+    );
+
+
+    clearHistoryButton.addEventListener(
+        "click",
+        clearHistory
+    );
+
+
+    loadStatus();
+    resizeTextarea();
+    scrollToBottom();
+
+
+    /* =========================
+       THAY CHỨC NĂNG NÚT KIỂM THỬ CŨ
+       ========================= */
+
+    const systemTestModal =
+        document.getElementById("systemTestModal");
+
+    const closeSystemTestButton =
+        document.getElementById("closeSystemTestButton");
+
+    const runSystemTestButton =
+        document.getElementById("runSystemTestButton");
+
+    const systemTestSuite =
+        document.getElementById("systemTestSuite");
+
+    const systemTestSummary =
+        document.getElementById("systemTestSummary");
+
+    const systemTestResults =
+        document.getElementById("systemTestResults");
+
+    function escapeSystemTestHtml(value) {
+        return String(value || "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
+    function openSystemTestModal() {
+        systemTestModal.hidden = false;
+    }
+
+    function closeSystemTestModal() {
+        systemTestModal.hidden = true;
+    }
+
+    function renderSystemTestResults(data) {
+        const passed = Number(data.passed || 0);
+        const failed = Number(data.failed || 0);
+        const total = Number(data.total || 0);
+        const passRate = Number(data.pass_rate || 0);
+        const isPassed = data.status === "PASS";
+
+        systemTestSummary.className =
+            "system-test-summary "
+            + (isPassed ? "pass" : "fail");
+
+        systemTestSummary.textContent =
+            (isPassed ? "✓ PASS" : "✗ FAIL")
+            + ` — Tổng: ${total}`
+            + ` | Đạt: ${passed}`
+            + ` | Lỗi: ${failed}`
+            + ` | Pass rate: ${passRate}%`;
+
+        const results = Array.isArray(data.results)
+            ? data.results
+            : [];
+
+        systemTestResults.innerHTML = results.map(item => {
+            const status = String(
+                item.status || "FAIL"
+            ).toLowerCase();
+
+            const icon = status === "pass"
+                ? "✓"
+                : status === "skip"
+                    ? "•"
+                    : "✗";
+
+            return `
+                <article class="system-test-card ${escapeSystemTestHtml(status)}">
+                    <div class="system-test-card-title">
+                        ${icon}
+                        ${escapeSystemTestHtml(item.test_id)}
+                        — ${escapeSystemTestHtml(item.layer)}
+                    </div>
+                    <div class="system-test-card-meta">
+                        ${escapeSystemTestHtml(item.name)}<br>
+                        Thời gian: ${escapeSystemTestHtml(item.duration_ms)} ms
+                    </div>
+                    <div class="system-test-card-detail">
+                        Mong đợi: ${escapeSystemTestHtml(item.expected)}
+                        <br>
+                        Thực tế: ${escapeSystemTestHtml(item.actual)}
+                        <br>
+                        ${escapeSystemTestHtml(item.detail)}
+                    </div>
+                </article>
+            `;
+        }).join("");
+    }
+
+    async function runSystemTests() {
+        runSystemTestButton.disabled = true;
+        runSystemTestButton.textContent = "⏳ Đang kiểm thử...";
+        systemTestSummary.className = "system-test-summary";
+        systemTestSummary.textContent = "Đang chạy bộ kiểm thử...";
+        systemTestResults.innerHTML = "";
+
+        try {
+            const response = await fetch(
+                "/api/system-tests/run",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Accept": "application/json",
+                    },
+                    body: JSON.stringify({
+                        suite: systemTestSuite.value,
+                    }),
+                }
+            );
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(
+                    data.detail || "Không thể chạy kiểm thử."
+                );
+            }
+
+            renderSystemTestResults(data);
+        } catch (error) {
+            systemTestSummary.className =
+                "system-test-summary fail";
+
+            systemTestSummary.textContent =
+                "✗ Không thể chạy kiểm thử.";
+
+            systemTestResults.innerHTML = `
+                <article class="system-test-card fail">
+                    <div class="system-test-card-title">
+                        Lỗi hệ thống kiểm thử
+                    </div>
+                    <div class="system-test-card-detail">
+                        ${escapeSystemTestHtml(error.message)}
+                    </div>
+                </article>
+            `;
+        } finally {
+            runSystemTestButton.disabled = false;
+            runSystemTestButton.textContent = "▶ Chạy kiểm thử";
+        }
+    }
+
+    /* Gỡ chức năng cũ khỏi đúng nút hiện có */
+    testSystemButton.removeEventListener(
+        "click",
+        testSystem
+    );
+
+    /* Nút kiểm thử ban đầu mở modal mới */
+    testSystemButton.addEventListener(
+        "click",
+        openSystemTestModal
+    );
+
+    closeSystemTestButton.addEventListener(
+        "click",
+        closeSystemTestModal
+    );
+
+    runSystemTestButton.addEventListener(
+        "click",
+        runSystemTests
+    );
+
+    systemTestModal.addEventListener(
+        "click",
+        event => {
+            if (event.target === systemTestModal) {
+                closeSystemTestModal();
+            }
+        }
+    );
+
+</script>
+</body>
+</html>

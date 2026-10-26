@@ -1,0 +1,41 @@
+id,question,expected_code,expected_type,group
+Q01,Đăng ký tạm trú cần giấy tờ gì?,1.004194,documents,in_scope
+Q02,Hồ sơ đăng ký tạm trú gồm những gì?,1.004194,documents,in_scope
+Q03,Đăng ký tạm trú mất bao lâu?,1.004194,time,in_scope
+Q04,Đăng ký thường trú nộp ở đâu?,1.004222,location,in_scope
+Q05,dang ky thuong tru can giay to gi,1.004222,documents,in_scope
+Q06,Lệ phí đăng ký thường trú là bao nhiêu?,1.004222,fee,in_scope
+Q07,Các bước đăng ký thường trú,1.004222,steps,in_scope
+Q08,Gia hạn tạm trú mất bao lâu?,1.002755,time,in_scope
+Q09,Gia hạn tạm trú cần chuẩn bị gì?,1.002755,documents,in_scope
+Q10,Khai báo tạm vắng ở đâu?,1.003677,location,in_scope
+Q11,Thủ tục khai báo tạm vắng gồm những bước nào?,1.003677,steps,in_scope
+Q12,Xóa đăng ký thường trú căn cứ pháp lý là gì?,1.003197,legal,in_scope
+Q13,Xóa đăng ký tạm trú cần giấy tờ gì?,1.010028,documents,in_scope
+Q14,Xóa tạm trú có mất phí không?,1.010028,fee,in_scope
+Q15,Tách hộ cần những bước nào?,1.010038,steps,in_scope
+Q16,Tách khẩu cần hồ sơ gì?,1.010038,documents,in_scope
+Q17,Cho tôi hỏi về xác nhận cư trú,1.010041,general,in_scope
+Q18,Xin giấy xác nhận cư trú mất mấy ngày?,1.010041,time,in_scope
+Q19,Điều chỉnh thông tin cư trú cần mẫu đơn gì?,1.010039,form,in_scope
+Q20,Thông báo lưu trú có mất phí không?,2.001159,fee,in_scope
+Q21,Thông báo lưu trú thực hiện ở đâu?,2.001159,location,in_scope
+Q22,Làm căn cước cho con 10 tuổi ở đâu?,1.012549,location,in_scope
+Q23,Làm căn cước cho trẻ dưới 14 tuổi cần giấy tờ gì?,1.012549,documents,in_scope
+Q24,Cấp thẻ căn cước cho người trên 14 tuổi cần gì?,2.000200,documents,in_scope
+Q25,Mất thẻ căn cước thì xin cấp lại thế nào?,2.001194,steps,in_scope
+Q26,Cấp lại căn cước mất bao lâu?,2.001194,time,in_scope
+Q27,Đổi thẻ căn cước lệ phí bao nhiêu?,2.001195,fee,in_scope
+Q28,Cấp đổi căn cước căn cứ pháp lý,2.001195,legal,in_scope
+Q29,Mẫu CT01 dùng cho đăng ký tạm trú ở đâu?,1.004194,form,in_scope
+Q30,Tôi chuyển nhà sang xã khác thì phải làm gì?,SUGGEST,suggestion,in_scope
+Q31,Làm hộ chiếu cần gì?,OUT,none,out_of_scope
+Q32,Đăng ký khai sinh cho con cần giấy tờ gì?,OUT,none,out_of_scope
+Q33,Thủ tục đăng ký kết hôn ở đâu?,OUT,none,out_of_scope
+Q34,Giá xăng hôm nay bao nhiêu?,OUT,none,out_of_scope
+Q35,Cấp lại hộ chiếu bị mất thế nào?,OUT,none,out_of_scope
+Q36,Đăng ký xe máy cần giấy tờ gì?,OUT,none,out_of_scope
+Q37,Thời tiết Hà Nội hôm nay,OUT,none,out_of_scope
+Q38,Đổi bằng lái xe ở đâu?,OUT,none,out_of_scope
+Q39,Xin chào,GREETING,greeting,other
+Q40,Cảm ơn bạn,GREETING,greeting,other
