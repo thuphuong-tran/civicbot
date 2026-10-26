@@ -1,5 +1,7 @@
 # CivicBot – Chatbot AI hỗ trợ tra cứu thủ tục cư trú và giấy tờ tùy thân
 
+![CI](https://github.com/thuphuong-tran/civicbot/actions/workflows/ci.yml/badge.svg)
+
 Đề tài môn **Các vấn đề hiện đại của Công nghệ phần mềm** – Nhóm 1, lớp K11 CNTTA, Học viện Phụ nữ Việt Nam.
 GVHD: PGS.TS Ngô Tứ Thành. Sinh viên: Trần Thu Phương (2374820154), Lê Văn Đạt (2374820034).
 
