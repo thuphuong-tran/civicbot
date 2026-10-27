@@ -109,3 +109,5 @@ Trên giao diện: nút **🧪 Kiểm thử hệ thống** (cần nhập `ADMIN_
 - Tệp tải lên: chỉ PNG/JPG/WEBP/PDF/DOCX, giới hạn dung lượng, đổi tên ngẫu nhiên, xóa sau khi xử lý.
 - Giới hạn tần suất câu hỏi để chống spam và bảo vệ hạn mức Gemini.
 - CivicBot chỉ cung cấp thông tin tham khảo; người dân cần đối chiếu Cổng Dịch vụ công trước khi nộp hồ sơ.
+
+Nhom 1 - K11 CNTTA - Hoc vien Phu nu Viet Nam
